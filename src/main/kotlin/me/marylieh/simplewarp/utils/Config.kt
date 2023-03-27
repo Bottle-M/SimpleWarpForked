@@ -6,6 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.io.IOException
 
+/**
+ * 这个类针对配置进行操作
+ */
 object Config {
 
     private lateinit var file: File

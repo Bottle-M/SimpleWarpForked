@@ -2,6 +2,7 @@ package me.marylieh.simplewarp.commands
 
 import me.marylieh.simplewarp.SimpleWarp
 import me.marylieh.simplewarp.utils.Config
+import me.marylieh.simplewarp.utils.Data
 import me.marylieh.simplewarp.utils.Messages
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -25,7 +26,7 @@ class SimpleWarpCommandExecutor : CommandExecutor {
 
                 "reload" -> {
                     // 重载配置
-                    if (Config.reload()) {
+                    if (Config.reload()&& Data.reload()) {
                         sender.sendMessage(Messages.reloadSuccess)
                     } else {
                         sender.sendMessage(Messages.reloadFailure) // 重载失败

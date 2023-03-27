@@ -3,6 +3,7 @@ package me.marylieh.simplewarp
 import me.marylieh.simplewarp.commands.*
 import me.marylieh.simplewarp.commands.position.PositionCommandExecutor
 import me.marylieh.simplewarp.utils.Config
+import me.marylieh.simplewarp.utils.Data
 import org.bukkit.plugin.java.JavaPlugin
 
 class SimpleWarp : JavaPlugin() {
@@ -18,7 +19,8 @@ class SimpleWarp : JavaPlugin() {
 
     override fun onLoad() {
         plugin = this // 暴露插件Plugin对象
-        Config.loadConfig()
+        Config.loadConfig() // 初始化配置对象
+        Data.loadData() // 初始化地标数据对象
     }
 
     override fun onEnable() {
