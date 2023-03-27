@@ -17,8 +17,8 @@ class WarpCommandExecutor : CommandExecutor {
             return true
         }
         val player: Player = sender
-
-        if (player.hasPermission("simplewarp.warp")) {
+        val isOp = Config.opOverride(player)
+        if (isOp || player.hasPermission("simplewarp.warp")) {
             if (args.size == 1) {
                 var warpId = ""
                 if (player.hasPermission("simplewarp.warps")) {
@@ -41,7 +41,7 @@ class WarpCommandExecutor : CommandExecutor {
 
                 if (Config.getConfig().getBoolean("player-warps-only")) {
                     // 检查玩家是否拥有地标
-                    if (!Data.warpOwnedBy(player.uniqueId.toString(), warpId)) {
+                    if (!isOp && !Data.warpOwnedBy(player.uniqueId.toString(), warpId)) {
                         player.sendMessage(Messages.noPermission)
                         return true
                     }

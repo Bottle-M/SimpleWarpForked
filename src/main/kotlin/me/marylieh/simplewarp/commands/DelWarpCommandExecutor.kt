@@ -16,12 +16,13 @@ class DelWarpCommandExecutor : CommandExecutor {
             return true
         }
         val player: Player = sender
-        if (player.hasPermission("simplewarp.delwarp")) {
+        val isOp = Config.opOverride(player)
+        if (isOp || player.hasPermission("simplewarp.delwarp")) {
             if (args.size == 1) {
                 val warpId = args[0]
                 // 作者啊，如果有player-warps-only这个设计的话，删除的时候不应该不进行检查。
                 if (Config.getConfig().getBoolean("player-warps-only")) {
-                    if (!Data.warpOwnedBy(player.uniqueId.toString(), warpId)) {
+                    if (!isOp && !Data.warpOwnedBy(player.uniqueId.toString(), warpId)) {
                         player.sendMessage(Messages.noPermission)
                         return true
                     }

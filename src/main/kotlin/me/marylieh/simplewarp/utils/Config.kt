@@ -3,6 +3,7 @@ package me.marylieh.simplewarp.utils
 import me.marylieh.simplewarp.SimpleWarp
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.Player
 import java.io.File
 import java.io.IOException
 
@@ -33,6 +34,11 @@ object Config {
         initConfig()
     }
 
+    // 判断玩家是否能作为op忽略一切权限限制
+    fun opOverride(player: Player): Boolean {
+        return getConfig().getBoolean("op-full-access") && player.isOp
+    }
+
     fun getConfig(): YamlConfiguration {
         return config
     }
@@ -58,6 +64,10 @@ object Config {
     }
 
     private fun initConfig() {
+        // OP有最高权限
+        if (config.get("op-full-access") == null) {
+            config.set("op-full-access", true) // 默认OP有全部权限
+        }
         // 传送延迟时间(in seconds)
         if (config.get("delay-before-tp") == null) {
             config.set("delay-before-tp", 0) // 默认立即传送

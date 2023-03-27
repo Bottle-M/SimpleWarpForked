@@ -1,5 +1,6 @@
 package me.marylieh.simplewarp.commands
 
+import me.marylieh.simplewarp.utils.Config
 import me.marylieh.simplewarp.utils.Data
 import me.marylieh.simplewarp.utils.Messages
 import org.bukkit.command.Command
@@ -16,7 +17,7 @@ class SetWarpCommandExecutor : CommandExecutor {
         }
         val player: Player = sender
 
-        if (player.hasPermission("simplewarp.setwarp")) {
+        if (Config.opOverride(player) || player.hasPermission("simplewarp.setwarp")) {
             if (args.size == 1) {
                 val warpId = args[0]
                 Data.setWarp(warpId, player.location, player.uniqueId.toString())

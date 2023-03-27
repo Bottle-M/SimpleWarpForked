@@ -17,7 +17,8 @@ class PositionCommandExecutor : CommandExecutor {
             sender.sendMessage(Messages.notAPlayer)
         }
         val player: Player = sender as Player
-        if (!player.hasPermission("simplewarp.position")) {
+        val isOp = Config.opOverride(player)
+        if (!isOp && !player.hasPermission("simplewarp.position")) {
             player.sendMessage(Messages.noPermission)
             return true
         }
@@ -29,7 +30,7 @@ class PositionCommandExecutor : CommandExecutor {
         if (args.size == 1 || args.size == 2) {
             when (args[0]) {
                 "list" -> {
-                    if (!player.hasPermission("simplewarp.position.list")) {
+                    if (!isOp && !player.hasPermission("simplewarp.position.list")) {
                         player.sendMessage(Messages.noPermission)
                         return true
                     }
@@ -37,7 +38,7 @@ class PositionCommandExecutor : CommandExecutor {
                 }
 
                 "del" -> {
-                    if (!player.hasPermission("simplewarp.position.del")) {
+                    if (!isOp && !player.hasPermission("simplewarp.position.del")) {
                         player.sendMessage(Messages.noPermission)
                         return true
                     }
@@ -55,7 +56,7 @@ class PositionCommandExecutor : CommandExecutor {
                     val posId = args[0]
                     if (Data.positionExists(posId)) {
                         // 如果位置存在
-                        if (!player.hasPermission("simplewarp.position.view")) {
+                        if (!isOp && !player.hasPermission("simplewarp.position.view")) {
                             player.sendMessage(Messages.noPermission)
                             return true
                         }
@@ -63,7 +64,7 @@ class PositionCommandExecutor : CommandExecutor {
                         return true
                     }
                     // 如果位置不存在，就开始创建
-                    if (!player.hasPermission("simplewarp.position.create")) {
+                    if (!isOp && !player.hasPermission("simplewarp.position.create")) {
                         player.sendMessage(Messages.noPermission)
                         return true
                     }
