@@ -43,6 +43,30 @@ object Data {
         positionData = YamlConfiguration.loadConfiguration(positionFile)
     }
 
+    // 写入文件
+    private fun save() {
+        try {
+            warpData.save(warpFile)
+            positionData.save(positionFile)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    // 重载数据
+    fun reload(): Boolean {
+        try {
+            warpData.load(warpFile)
+            positionData.load(positionFile)
+            return true
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: InvalidConfigurationException) {
+            e.printStackTrace()
+        }
+        return false
+    }
+
     // 设置warp
     fun setWarp(warpId: String, location: Location, uuid: String) {
         val world: String = location.world.name
@@ -64,11 +88,11 @@ object Data {
     // 获得warp
     fun getWarp(warpId: String): Location {
         val world = Bukkit.getWorld(warpData.getString(".warps.${warpId}.world")!!)
-        val x = warpData.getInt("warps.${warpId}.x").toDouble()
-        val y = warpData.getInt("warps.${warpId}.y").toDouble()
-        val z = warpData.getInt("warps.${warpId}.z").toDouble()
-        val yaw = warpData.getInt("warps.${warpId}.yaw").toFloat()
-        val pitch = warpData.getInt("warps.${warpId}.pitch").toFloat()
+        val x = warpData.getLong("warps.${warpId}.x").toDouble()
+        val y = warpData.getLong("warps.${warpId}.y").toDouble()
+        val z = warpData.getLong("warps.${warpId}.z").toDouble()
+        val yaw = warpData.getLong("warps.${warpId}.yaw").toFloat()
+        val pitch = warpData.getLong("warps.${warpId}.pitch").toFloat()
         return Location(world, x, y, z, yaw, pitch)
     }
 
@@ -98,27 +122,41 @@ object Data {
         return warpData.getString(".warps.$warpId") != null
     }
 
-    // 写入文件
-    fun save() {
-        try {
-            warpData.save(warpFile)
-            positionData.save(positionFile)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+    // 获得所有位置的集合
+    fun allPositionsSet(): Set<String>? {
+        return positionData.getConfigurationSection(".positions")?.getKeys(false)
     }
 
-    // 重载数据
-    fun reload(): Boolean {
-        try {
-            warpData.load(warpFile)
-            positionData.load(positionFile)
-            return true
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: InvalidConfigurationException) {
-            e.printStackTrace()
-        }
-        return false
+    // 获得位置
+    fun getPosition(posId: String): String {
+        val world = positionData.getString(".positions.${posId}.world")
+        val x = positionData.getLong(".positions.${posId}.x")
+        val y = positionData.getLong(".positions.${posId}.y")
+        val z = positionData.getLong(".positions.${posId}.z")
+        return "§9$posId §8[§6$x§8, §6$y§8, §6$z§8, World: §6$world§8]"
+    }
+
+    // 记录位置
+    fun setPosition(posId: String, location: Location) {
+        val world = location.world.name
+        val x = location.blockX
+        val y = location.blockY
+        val z = location.blockZ
+        positionData.set(".positions.${posId}.world", world)
+        positionData.set(".positions.${posId}.x", x)
+        positionData.set(".positions.${posId}.y", y)
+        positionData.set(".positions.${posId}.z", z)
+        save()
+    }
+
+    // 位置是否存在
+    fun positionExists(posId: String): Boolean {
+        return positionData.getString(".positions.$posId") != null
+    }
+
+    // 移除位置
+    fun rmPosition(posId: String) {
+        positionData.set(".positions.$posId", null)
+        save()
     }
 }

@@ -49,7 +49,7 @@ object Messages {
     }
 
     // 传送延迟时发给玩家的消息
-    fun teleportDelay(timeDelay: Int, noMoveAllowed: Boolean): String {
+    fun teleportDelay(timeDelay: Long, noMoveAllowed: Boolean): String {
         var msg = "$PREFIX §aTeleportation will start in §6$timeDelay§a second(s). "
         if (noMoveAllowed)
             msg += "Please §cdo not move§a while waiting."

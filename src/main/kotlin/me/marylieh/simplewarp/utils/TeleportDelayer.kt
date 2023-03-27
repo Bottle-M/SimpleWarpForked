@@ -14,7 +14,7 @@ object TeleportDelayer {
     // 这里用玩家的UUID作为键
     fun tp(player: Player, location: Location, warpId: String) {
         // 传送前等待时间(In seconds)
-        var timeDelay = Config.getConfig().getInt("delay-before-tp")
+        var timeDelay = Config.getConfig().getLong("delay-before-tp")
         if (timeDelay < 0) // 防止出现负数的等待时间(Seconds)
             timeDelay = 0
         // 等待时是否允许玩家移动
@@ -43,7 +43,7 @@ object TeleportDelayer {
 class TeleportTask(
     private val player: Player,
     private val location: Location,
-    private var timeLeft: Int,
+    private var timeLeft: Long,
     private val noMoveAllowed: Boolean,
     private val warpId: String
 ) : BukkitRunnable() {
