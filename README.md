@@ -13,6 +13,35 @@ coordinate**.
 
 * Position feature is disabled by default, it can be enabled in config file `configs.yml` .
 
+## Configs
+
+`configs.yml`
+
+```yaml
+op-full-access: false
+delay-before-tp: 0
+no-move-allowed-before-tp: false
+position-system: false
+player-warps-only: false
+```
+
+- `op-full-access` - If this option is set to `true`, server operator will have full access to all available features of
+  SimpleWarp.
+    * **Notice**: Permission plugins such as **GroupManager** may have an identical option, in this
+      case, `op-full-access` option might have no effect because it's overrided by the permission plugin.
+
+- `delay-before-tp` - The delay time **in seconds** before the teleportation start, with this option set with a value
+  greater than 0, player will have to wait for the specific time before being teleported.
+    * **Notice**: This can be bypassed if one has the permission `simplewarp.warp.nodelay`
+
+- `no-move-allowed-before-tp` - This option is valid when `delay-before-tp > 0`. If it's set to `true`, any movement
+  from the player being teleported during the delay period will terminate the teleportation.
+    * **Notice**: Can be bypassed with the permission `simplewarp.warp.allowmove`
+
+- `position-system` - Used to enable the `/position` feature.
+
+- `player-warps-only` - With this option enabled, players can only teleport to the warp points of their own.
+
 ## Commands
 
 * `/warp <warpname>` - *Teleport you to a warppoint.*
