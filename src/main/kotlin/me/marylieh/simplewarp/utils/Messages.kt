@@ -24,6 +24,9 @@ object Messages {
     // 地标不存在
     val warpNotExist: String = "$PREFIX §cThis warp doesn't exists!"
 
+    // 地标已存在
+    val warpAlreadyExists: String = "$PREFIX §cWarp of the name already exists!"
+
     // 位置信息不存在
     val posNotExist: String = "$PREFIX §cThis position doesn't exists."
 
@@ -35,12 +38,12 @@ object Messages {
 
     // 列出所有地标
     fun listWarps(warps: Collection<String>?): String {
-        return "$PREFIX All available warps: ${warps?.joinToString(", ")}"
+        return "$PREFIX All available warps: §e${warps?.joinToString(", ")}"
     }
 
     // 列出玩家拥有的地标
     fun listPlayerWarps(warps: Collection<String>?): String {
-        return "$PREFIX Warps you owned: ${warps?.joinToString(", ")}"
+        return "$PREFIX Warps you owned: §e${warps?.joinToString(", ")}"
     }
 
     // 列出所有位置信息
@@ -68,7 +71,7 @@ object Messages {
 
     // 地标被删除
     fun warpDeleted(warpId: String): String {
-        return "$PREFIX §aWarp §6$warpId §a was successfully deleted!"
+        return "$PREFIX §aWarp §6$warpId§a was successfully deleted!"
     }
 
     fun warpSet(warpId: String): String {

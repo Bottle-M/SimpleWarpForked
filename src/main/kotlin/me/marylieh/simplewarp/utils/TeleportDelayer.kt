@@ -67,12 +67,6 @@ class TeleportTask(
     }
 
     override fun run() {
-        if (timeLeft <= 0) {
-            player.sendMessage(Messages.teleportedTo(warpId))
-            player.teleport(location) // 倒计时结束立即传送
-            stopWorking() // 玩家已传送，计时器任务停止
-            return
-        }
         // 如果在等待过程中不允许玩家移动，就需要检查玩家是否移动
         if (noMoveAllowed) {
             val currPos: Location = player.location // 获得玩家当前的坐标
@@ -85,6 +79,12 @@ class TeleportTask(
                 player.sendMessage(Messages.tpCancelledByMovement)
                 return
             }
+        }
+        if (timeLeft <= 0) {
+            player.sendMessage(Messages.teleportedTo(warpId))
+            player.teleport(location) // 倒计时结束立即传送
+            stopWorking() // 玩家已传送，计时器任务停止
+            return
         }
         timeLeft--
     }

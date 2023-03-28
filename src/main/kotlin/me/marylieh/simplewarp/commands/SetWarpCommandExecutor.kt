@@ -20,8 +20,12 @@ class SetWarpCommandExecutor : CommandExecutor {
         if (Config.checkPermission(player, "simplewarp.setwarp")) {
             if (args.size == 1) {
                 val warpId = args[0]
-                Data.setWarp(warpId, player.location, player.uniqueId.toString())
-                player.sendMessage(Messages.warpSet(warpId))
+                if (!Data.warpExists(warpId)) {
+                    Data.setWarp(warpId, player.location, player.uniqueId.toString())
+                    player.sendMessage(Messages.warpSet(warpId))
+                } else {
+                    player.sendMessage(Messages.warpAlreadyExists)
+                }
             } else {
                 player.sendMessage(Messages.usage("§7/setwarp <warpName>"))
             }

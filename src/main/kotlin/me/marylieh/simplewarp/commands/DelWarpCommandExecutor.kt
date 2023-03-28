@@ -26,8 +26,13 @@ class DelWarpCommandExecutor : CommandExecutor {
                         return true
                     }
                 }
-                Data.rmWarp(warpId) // warp移除
-                player.sendMessage(Messages.warpDeleted(warpId))
+                // 地标存在才能删掉
+                if (Data.warpExists(warpId)) {
+                    Data.rmWarp(warpId) // warp移除
+                    player.sendMessage(Messages.warpDeleted(warpId))
+                } else {
+                    player.sendMessage(Messages.warpNotExist)
+                }
             } else {
                 player.sendMessage(Messages.usage("§7/warp <warpName>"))
             }

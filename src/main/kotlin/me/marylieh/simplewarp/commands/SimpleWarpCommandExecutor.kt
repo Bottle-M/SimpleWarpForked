@@ -27,12 +27,15 @@ class SimpleWarpCommandExecutor : CommandExecutor {
 
                 "reload" -> {
                     // 重载配置
-                    if ((sender !is Player) || Config.checkPermission(sender, "simplewarp.reload"))
+                    if ((sender !is Player) || Config.checkPermission(sender, "simplewarp.reload")) {
                         if (Config.reload() && Data.reload()) {
                             sender.sendMessage(Messages.reloadSuccess)
                         } else {
                             sender.sendMessage(Messages.reloadFailure) // 重载失败
                         }
+                    } else {
+                        sender.sendMessage(Messages.noPermission)
+                    }
                 }
 
                 else -> {
