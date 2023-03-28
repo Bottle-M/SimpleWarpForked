@@ -7,6 +7,7 @@ import me.marylieh.simplewarp.utils.Messages
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
 /**
  * 这个模块用作接管/simplewarp相关指令的执行
@@ -26,11 +27,12 @@ class SimpleWarpCommandExecutor : CommandExecutor {
 
                 "reload" -> {
                     // 重载配置
-                    if (Config.reload()&& Data.reload()) {
-                        sender.sendMessage(Messages.reloadSuccess)
-                    } else {
-                        sender.sendMessage(Messages.reloadFailure) // 重载失败
-                    }
+                    if ((sender !is Player) || Config.checkPermission(sender, "simplewarp.reload"))
+                        if (Config.reload() && Data.reload()) {
+                            sender.sendMessage(Messages.reloadSuccess)
+                        } else {
+                            sender.sendMessage(Messages.reloadFailure) // 重载失败
+                        }
                 }
 
                 else -> {

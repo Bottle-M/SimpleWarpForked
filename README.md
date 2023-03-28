@@ -1,6 +1,7 @@
 # SimpleWarp-Forked
 
-This is a forked version of [SimpleWarp](https://github.com/marylieh/SimpleWarpV3) by [@SomeBottle](https://github.com/SomeBottle)  
+This is a forked version of [SimpleWarp](https://github.com/marylieh/SimpleWarpV3)
+by [@SomeBottle](https://github.com/SomeBottle)
 
 * Original Author: [@marylieh](https://github.com/marylieh)
 
@@ -40,6 +41,8 @@ coordinate**.
 * `simplewarp.position.create` - Allows you to use the **/position \<name>**
 * `simplewarp.position.del` - Allows you to use the **/position del \<name>**
 * `simplewarp.position.list` - Allows you to use the **/position list**
+* `simplewarp.reload` - Allows you to reload all configs and warp/position data
 
-*To give the permissions to players you need a Permission System like [LuckPerms](https://luckperms.net/) or [GroupManager](https://github.com/ElgarL/GroupManager).*
+*To give the permissions to players you need a Permission System like [LuckPerms](https://luckperms.net/)
+or [GroupManager](https://github.com/ElgarL/GroupManager).*
 
