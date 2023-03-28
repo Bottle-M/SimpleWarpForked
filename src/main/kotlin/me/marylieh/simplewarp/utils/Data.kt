@@ -5,6 +5,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.Player
 import java.io.File
 import java.io.IOException
 
@@ -113,8 +114,9 @@ object Data {
     }
 
     // 判断某个地标是否为某个玩家所拥有
-    fun warpOwnedBy(uuid: String, warpId: String): Boolean {
-        return warpData.getString(".warps.${warpId}.owner") == uuid
+    fun warpOwnedBy(player: Player, warpId: String): Boolean {
+        // op有最高权限的的话就可以访问所有坐标
+        return Config.opOverride(player) || warpData.getString(".warps.${warpId}.owner") == player.uniqueId.toString()
     }
 
     // 地标是否存在

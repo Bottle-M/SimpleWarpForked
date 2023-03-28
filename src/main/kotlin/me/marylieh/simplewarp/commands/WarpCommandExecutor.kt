@@ -17,11 +17,10 @@ class WarpCommandExecutor : CommandExecutor {
             return true
         }
         val player: Player = sender
-        val isOp = Config.opOverride(player)
-        if (isOp || player.hasPermission("simplewarp.warp")) {
+        if (Config.checkPermission(player, "simplewarp.warp")) {
             if (args.size == 1) {
                 var warpId = ""
-                if (player.hasPermission("simplewarp.warps")) {
+                if (Config.checkPermission(player, "simplewarp.warps")) {
                     // 模糊匹配地标，用户可以只输入地标名的开头几个字符
                     val filtered =
                         Data.allWarpsSet()?.filter { value -> value.lowercase().startsWith(args[0].lowercase()) }
@@ -41,7 +40,7 @@ class WarpCommandExecutor : CommandExecutor {
 
                 if (Config.getConfig().getBoolean("player-warps-only")) {
                     // 检查玩家是否拥有地标
-                    if (!isOp && !Data.warpOwnedBy(player.uniqueId.toString(), warpId)) {
+                    if (!Data.warpOwnedBy(player, warpId)) {
                         player.sendMessage(Messages.noPermission)
                         return true
                     }

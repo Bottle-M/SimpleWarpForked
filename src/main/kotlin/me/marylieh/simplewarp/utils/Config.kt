@@ -39,11 +39,16 @@ object Config {
         return getConfig().getBoolean("op-full-access") && player.isOp
     }
 
+    // 检查一个玩家是否有某种权限
+    fun checkPermission(player: Player, node: String): Boolean {
+        return opOverride(player) || player.hasPermission(node)
+    }
+
     fun getConfig(): YamlConfiguration {
         return config
     }
 
-    fun save() {
+    private fun save() {
         try {
             config.save(file)
         } catch (e: IOException) {

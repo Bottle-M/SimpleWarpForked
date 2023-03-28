@@ -17,9 +17,9 @@ class WarpTabCompleter : TabCompleter {
         val list = ArrayList<String>()
         if (sender !is Player) return list
         val player: Player = sender
-        val isOp = Config.opOverride(player)
-        if (isOp || player.hasPermission("simplewarp.warps")) {
-            if (!isOp && Config.getConfig().getBoolean("player-warps-only")) {
+        if (Config.checkPermission(player, "simplewarp.warps")) {
+            // 如果OP有最高权限，就可以列出所有的地标
+            if (!Config.opOverride(player) && Config.getConfig().getBoolean("player-warps-only")) {
                 // 模糊匹配
                 val filtered = Data.playerWarpSet(player.uniqueId.toString())
                     ?.filter { value -> value.lowercase().startsWith(args[0].lowercase()) }

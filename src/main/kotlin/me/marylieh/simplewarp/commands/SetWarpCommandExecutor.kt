@@ -17,7 +17,7 @@ class SetWarpCommandExecutor : CommandExecutor {
         }
         val player: Player = sender
 
-        if (Config.opOverride(player) || player.hasPermission("simplewarp.setwarp")) {
+        if (Config.checkPermission(player, "simplewarp.setwarp")) {
             if (args.size == 1) {
                 val warpId = args[0]
                 Data.setWarp(warpId, player.location, player.uniqueId.toString())

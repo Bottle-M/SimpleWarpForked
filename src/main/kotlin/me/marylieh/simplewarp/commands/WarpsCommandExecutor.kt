@@ -17,10 +17,10 @@ class WarpsCommandExecutor : CommandExecutor {
         }
         val player: Player = sender
         val allWarps = Data.allWarpsSet()
-        val isOp = Config.opOverride(player)
-        if (isOp || player.hasPermission("simplewarp.warps")) {
+        if (Config.checkPermission(player, "simplewarp.warps")) {
             // 如果没有开启【玩家创建的地标只能由玩家使用】的选项，就列出所有地标
-            if (isOp || !Config.getConfig().getBoolean("player-warps-only")) {
+            // OP如果有最高权限，也可以列出所有地标
+            if (Config.opOverride(player) || !Config.getConfig().getBoolean("player-warps-only")) {
                 player.sendMessage(Messages.listWarps(allWarps))
                 return true
             }

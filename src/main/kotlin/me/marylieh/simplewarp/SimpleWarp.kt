@@ -28,9 +28,6 @@ class SimpleWarp : JavaPlugin() {
         // if (Config.getConfig().getBoolean("auto-update")) {val updater = Updater(this, 395393, this.file, Updater.UpdateType.DEFAULT, true)}
     }
 
-    override fun onDisable() {
-        Config.save()
-    }
 
     private fun registerCommands() {
         val setWarpCommand = getCommand("setwarp") ?: error("Couldn't get setwarp command! This should not happen!")
