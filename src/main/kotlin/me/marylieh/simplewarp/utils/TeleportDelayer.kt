@@ -18,7 +18,12 @@ object TeleportDelayer {
         if (timeDelay < 0) // 防止出现负数的等待时间(Seconds)
             timeDelay = 0
         // 等待时是否允许玩家移动
-        val noMoveAllowed = Config.getConfig().getBoolean("no-move-allowed-before-tp")
+        var noMoveAllowed = Config.getConfig().getBoolean("no-move-allowed-before-tp")
+        // 如果玩家有相应权限，就可以绕过传送延迟和移动检查
+        if (Config.checkPermission(player, "simplewarp.warp.nodelay"))
+            timeDelay = 0
+        if (Config.checkPermission(player, "simplewarp.warp.allowmove"))
+            noMoveAllowed = false
         // 创建传送任务（计时器）对象
         // 这里timeDelay*2是因为tpTask每半秒被执行一次
         val tpTask = TeleportTask(player, location, timeDelay * 2, noMoveAllowed, warpId)

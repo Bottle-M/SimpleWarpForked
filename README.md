@@ -31,7 +31,7 @@ coordinate**.
 
 * `simplewarp.warp` - Allows you to use the **/warp** command.
 * `simplewarp.warp.nodelay` - Allows you to **ignore** the delay before teleportation
-* `simplewarp.warp.movement` - Allows you to **move** while waiting to teleport
+* `simplewarp.warp.allowmove` - Allows you to **move** while waiting to teleport
 * `simplewarp.delwarp` - Allows you to use the **/delwarp** command.
 * `simplewarp.setwarp` - Allows you to use the **/setwarp** command.
 * `simplewarp.warps` - Allows you to use the **/warps** command.
