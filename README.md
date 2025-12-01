@@ -81,7 +81,7 @@ max-homes-per-player: 0
 * `simplewarp.position.create` - Allows the player to use the **/position \<name>**
 * `simplewarp.position.del` - Allows the player to use the **/position del \<name>**
 * `simplewarp.position.list` - Allows the player to use the **/position list**
-* `simplewarp.reload` - Allows the player to reload all configs and warp/position data
+* `simplewarp.reload` - Allows the player to reload all configs and warp / home / position data
 
 *To give the permissions to players you need a Permission System like [LuckPerms](https://luckperms.net/)
 or [GroupManager](https://github.com/ElgarL/GroupManager).*
