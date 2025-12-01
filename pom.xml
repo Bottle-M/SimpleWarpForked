@@ -6,7 +6,7 @@
 
     <groupId>me.marylieh.simplewarp</groupId>
     <artifactId>SimpleWarpV3</artifactId>
-    <version>1.0.0</version>
+    <version>4.0.0</version>
     <packaging>jar</packaging>
 
     <name>SimpleWarpV3</name>
