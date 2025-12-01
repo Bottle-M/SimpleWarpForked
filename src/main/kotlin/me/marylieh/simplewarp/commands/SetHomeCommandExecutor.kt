@@ -24,9 +24,9 @@ class SetHomeCommandExecutor : CommandExecutor {
                 val homeId = args[0]
                 val uuid = player.uniqueId.toString()
                 val numPlayerHomes = Data.playerHomeCount(uuid)
-                if(numPlayerHomes >= maxHomesAllowed) {
+                if (!Config.opOverride(player) && numPlayerHomes >= maxHomesAllowed) {
                     // 家数量超出限制
-                    player.sendMessage(Messages.tooManyHomes(maxHomesAllowed,numPlayerHomes))
+                    player.sendMessage(Messages.tooManyHomes(maxHomesAllowed, numPlayerHomes))
                     return true
                 }
                 if (!Data.playerHomeExists(homeId, uuid)) {
