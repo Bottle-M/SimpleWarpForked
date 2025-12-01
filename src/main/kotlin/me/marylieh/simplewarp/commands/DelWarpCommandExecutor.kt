@@ -34,7 +34,7 @@ class DelWarpCommandExecutor : CommandExecutor {
                     player.sendMessage(Messages.warpNotExist)
                 }
             } else {
-                player.sendMessage(Messages.usage("§7/warp <warpName>"))
+                player.sendMessage(Messages.usage("§7/delwarp <warpName>"))
             }
         } else {
             player.sendMessage(Messages.noPermission)

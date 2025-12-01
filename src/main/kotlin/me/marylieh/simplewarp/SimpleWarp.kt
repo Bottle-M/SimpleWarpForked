@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class SimpleWarp : JavaPlugin() {
 
     val prefix = "§6[SimpleWarp]"
-    val version = "3.7"
+    val version = "4.0"
 
     // 伴生对象
     companion object {
@@ -37,15 +37,25 @@ class SimpleWarp : JavaPlugin() {
         val simpleWarpCommand =
             getCommand("simplewarp") ?: error("Couldn't get simplewarp command! This should not happen!")
         val positionCommand = getCommand("position") ?: error("Couldn't get position command! This should not happen!")
+        val setHomeCommand = getCommand("sethome") ?: error("Couldn't get sethome command! This should not happen!")
+        val delHomeCommand = getCommand("delhome") ?: error("Couldn't get delhome command! This should not happen!")
+        val homeCommand = getCommand("home") ?: error("Couldn't get home command! This should not happen!")
+        val homesCommand = getCommand("homes") ?: error("Couldn't get homes command! This should not happen!")
         setWarpCommand.setExecutor(SetWarpCommandExecutor())
         delWarpCommand.setExecutor(DelWarpCommandExecutor())
         warpCommand.setExecutor(WarpCommandExecutor())
         warpsCommand.setExecutor(WarpsCommandExecutor())
+        setHomeCommand.setExecutor(SetHomeCommandExecutor())
+        delHomeCommand.setExecutor(DelHomeCommandExecutor())
+        homeCommand.setExecutor(HomeCommandExecutor())
+        homesCommand.setExecutor(HomesCommandExecutor())
         simpleWarpCommand.setExecutor(SimpleWarpCommandExecutor())
         positionCommand.setExecutor(PositionCommandExecutor())
         simpleWarpCommand.tabCompleter = SimpleWarpTabCompleter()
         warpCommand.tabCompleter = WarpTabCompleter()
         delWarpCommand.tabCompleter = WarpTabCompleter()
+        homeCommand.tabCompleter = HomeTabCompleter()
+        delHomeCommand.tabCompleter = HomeTabCompleter()
     }
 
 

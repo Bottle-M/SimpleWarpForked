@@ -23,6 +23,8 @@ class SimpleWarpCommandExecutor : CommandExecutor {
                     sender.sendMessage(Messages.custom("§aVersion: ${SimpleWarp.plugin.version}"))
                     sender.sendMessage(Messages.custom("§3Forked version by§e SomeBottle"))
                     sender.sendMessage(Messages.custom("§3Original developer -§e marie(marylieh)"))
+                    sender.sendMessage(Messages.custom("§9Repo: https://github.com/Bottle-M/SimpleWarpForked"))
+                    sender.sendMessage(Messages.custom("(∠・ω< )"))
                 }
 
                 "reload" -> {

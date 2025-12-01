@@ -17,6 +17,10 @@ object Data {
     private lateinit var positionFile: File
     private lateinit var warpData: YamlConfiguration
     private lateinit var positionData: YamlConfiguration
+    private lateinit var homeSaveDir: File
+
+    // 存储用户 ID 对应的家数据文件
+    private lateinit var uuid2HomeData: HashMap<String, YamlConfiguration>
     fun loadData() {
         val dir = SimpleWarp.plugin.dataFolder // 插件目录
 
@@ -26,6 +30,7 @@ object Data {
 
         warpFile = File(dir, "warps.data") // 地标数据路径
         positionFile = File(dir, "positions.data") // 位置数据路径
+        homeSaveDir = File(dir, "homes") // 存储家数据的目录路径
         if (!warpFile.exists()) {
             try {
                 warpFile.createNewFile()
@@ -40,15 +45,51 @@ object Data {
                 e.printStackTrace()
             }
         }
+        if (!homeSaveDir.exists()) {
+            homeSaveDir.mkdirs()
+        }
         warpData = YamlConfiguration.loadConfiguration(warpFile)
         positionData = YamlConfiguration.loadConfiguration(positionFile)
+        uuid2HomeData = HashMap()
     }
 
-    // 写入文件
-    private fun save() {
+    // 把 warp 和 position 数据写入文件
+    private fun saveWarpsAndPositions() {
         try {
             warpData.save(warpFile)
             positionData.save(positionFile)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    // 读取家数据
+    private fun loadHomeData(uuid: String): YamlConfiguration {
+        // 如果缓存中已有该玩家的家数据，直接返回
+        if (uuid2HomeData.containsKey(uuid)) {
+            return uuid2HomeData[uuid]!!
+        }
+        val homeFile = File(homeSaveDir, "${uuid}.home")
+        val homeData = YamlConfiguration()
+        if (homeFile.exists()) {
+            try {
+                homeData.load(homeFile)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } catch (e: InvalidConfigurationException) {
+                e.printStackTrace()
+            }
+        }
+        uuid2HomeData[uuid] = homeData
+        return homeData
+    }
+
+    // 保存家数据
+    private fun saveHomeData(uuid: String) {
+        val homeData = uuid2HomeData[uuid] ?: return
+        val homeFile = File(homeSaveDir, "${uuid}.home")
+        try {
+            homeData.save(homeFile)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -59,6 +100,8 @@ object Data {
         try {
             warpData.load(warpFile)
             positionData.load(positionFile)
+            // 重置家数据缓存
+            uuid2HomeData.clear()
             return true
         } catch (e: IOException) {
             e.printStackTrace()
@@ -83,7 +126,7 @@ object Data {
         warpData.set(".warps.${warpId}.yaw", yaw)
         warpData.set(".warps.${warpId}.pitch", pitch)
         warpData.set(".warps.${warpId}.owner", uuid)
-        save()
+        saveWarpsAndPositions()
     }
 
     // 获得warp
@@ -100,7 +143,7 @@ object Data {
     // 移除warp
     fun rmWarp(warpId: String) {
         warpData.set(".warps.$warpId", null)
-        save()
+        saveWarpsAndPositions()
     }
 
     // 按玩家UUID筛选出玩家创建的所有地标
@@ -148,7 +191,7 @@ object Data {
         positionData.set(".positions.${posId}.x", x)
         positionData.set(".positions.${posId}.y", y)
         positionData.set(".positions.${posId}.z", z)
-        save()
+        saveWarpsAndPositions()
     }
 
     // 位置是否存在
@@ -159,6 +202,62 @@ object Data {
     // 移除位置
     fun rmPosition(posId: String) {
         positionData.set(".positions.$posId", null)
-        save()
+        saveWarpsAndPositions()
+    }
+
+    // 玩家设置 Home
+    fun setHome(homeId: String, location: Location, uuid: String) {
+        val world: String = location.world.name
+        val x = location.x
+        val y = location.y
+        val z = location.z
+        val yaw = location.yaw
+        val pitch = location.pitch
+        // 取出这个用户的家数据
+        val homeData = loadHomeData(uuid)
+        homeData.set(".homes.${homeId}.world", world)
+        homeData.set(".homes.${homeId}.x", x)
+        homeData.set(".homes.${homeId}.y", y)
+        homeData.set(".homes.${homeId}.z", z)
+        homeData.set(".homes.${homeId}.yaw", yaw)
+        homeData.set(".homes.${homeId}.pitch", pitch)
+        // 保存这个用户的家数据
+        saveHomeData(uuid)
+    }
+
+    // 获得 Home
+    fun getHome(homeId: String, uuid: String): Location {
+        val homeData = loadHomeData(uuid)
+        val world = Bukkit.getWorld(homeData.getString(".homes.${homeId}.world")!!)
+        val x = homeData.getLong("homes.${homeId}.x").toDouble()
+        val y = homeData.getLong("homes.${homeId}.y").toDouble()
+        val z = homeData.getLong("homes.${homeId}.z").toDouble()
+        val yaw = homeData.getLong("homes.${homeId}.yaw").toFloat()
+        val pitch = homeData.getLong("homes.${homeId}.pitch").toFloat()
+        return Location(world, x, y, z, yaw, pitch)
+    }
+
+    // 移除 Home
+    fun rmHome(homeId: String, uuid: String) {
+        val homeData = loadHomeData(uuid)
+        homeData.set(".homes.$homeId", null)
+        saveHomeData(uuid)
+    }
+
+    // 获得玩家所有 Home 的集合
+    fun allPlayerHomesSet(uuid: String): Collection<String>? {
+        val homeData = loadHomeData(uuid)
+        return homeData.getConfigurationSection(".homes")?.getKeys(false)
+    }
+
+    // 玩家的家数量
+    fun playerHomeCount(uuid: String): Int {
+        return allPlayerHomesSet(uuid)?.size ?: 0
+    }
+
+    // 玩家的家是否存在
+    fun playerHomeExists(homeId: String, uuid: String): Boolean {
+        val homeData = loadHomeData(uuid)
+        return homeData.getString(".homes.$homeId") != null
     }
 }

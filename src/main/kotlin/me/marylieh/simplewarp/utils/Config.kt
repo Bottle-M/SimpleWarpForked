@@ -92,6 +92,10 @@ object Config {
         if (config.get("player-warps-only") == null) {
             config.set("player-warps-only", false)
         }
+        // 玩家能创建几个家
+        if (config.get("max-homes-per-player") == null) {
+            config.set("max-homes-per-player", 0)
+        }
         save()
     }
 }
